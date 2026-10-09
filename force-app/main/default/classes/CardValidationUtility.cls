@@ -1,13 +1,8 @@
-public with sharing class CardValidationUtility {
-    
-    /**
-     * Validates card length purely in memory with zero DML.
-     * Immune to background triggers, flows, and recursion limits.
-     */
-    public static Boolean validateCardNumber(String cardNumber) {
+public class CardValidationUtility {
+    public static Boolean validateCardLength(String cardNumber) {
         if (String.isBlank(cardNumber)) {
             return false;
         }
-        return cardNumber.trim().length() == 16 && cardNumber.isNumeric();
+        return cardNumber.length() == 16;
     }
 }
