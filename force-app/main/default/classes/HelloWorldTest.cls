@@ -1,3 +1,9 @@
-@isTest private class HelloWorldTest {
-    @isTest static void testMe() { Assert.areEqual('Hello World', HelloWorld.sayHello()); }
+@isTest
+private class HelloWorldTest {
+    @isTest 
+    static void testMe() {
+        String expected = 'Hello World';
+        String actual = HelloWorld.sayHello();
+        System.assertEquals(expected, actual, 'The greeting message did not match.');
+    }
 }
