@@ -2,22 +2,35 @@
 private class DiscountUtilityTest {
     
     @isTest
-    static void testVIPDiscount() {
-        DiscountUtility.isVIP = true; // Turn VIP mode ON
+    static void testBaseDiscountFirst() {
+        DiscountUtility.isHolidaySeason = true; 
         
         Test.startTest();
-        Decimal discount = DiscountUtility.calculateDiscount(1000);
-        Test.stopTest();
-        System.assertEquals(200, discount, 'Should calculate 20% VIP discount');
-    }
-
-    @isTest
-    static void testBaseDiscountWhenNotVIP() {
-        DiscountUtility.isVIP = false; // Turn VIP mode OFF to reach the red lines
-        
-        Test.startTest();
+        // Amount over 1000 hits the base discount first and returns early
         Decimal discount = DiscountUtility.calculateDiscount(1500);
         Test.stopTest();
         System.assertEquals(150, discount, 'Should calculate 10% base discount');
+    }
+
+    @isTest
+    static void testHolidayDiscount() {
+        DiscountUtility.isHolidaySeason = true; // Turn Holiday mode ON
+        
+        Test.startTest();
+        // Amount under 1000 skips base discount and hits holiday discount
+        Decimal discount = DiscountUtility.calculateDiscount(500);
+        Test.stopTest();
+        System.assertEquals(25, discount, 'Should calculate 5% Holiday discount');
+    }
+
+    @isTest
+    static void testNoDiscount() {
+        DiscountUtility.isHolidaySeason = false; // Turn Holiday mode OFF
+        
+        Test.startTest();
+        // Amount under 1000 with holiday off hits the final return 0
+        Decimal discount = DiscountUtility.calculateDiscount(500);
+        Test.stopTest();
+        System.assertEquals(0, discount, 'Should return 0 discount');
     }
 }
